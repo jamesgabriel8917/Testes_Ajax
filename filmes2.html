@@ -1,0 +1,103 @@
+<html lang="pt-br">
+    <head>  
+        <meta charset="utf-8">
+        <title>Catalogo de filmes</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="xmltojson.js"></script>
+        <script>
+            function getFilmes(){
+                let XMLHttp = new XMLHttpRequest();
+                // abre o arquivo que contem os filmes
+                XMLHttp.open('GET', 'http://localhost/ajax/filmes.json');
+                XMLHttp.onreadystatechange = () => {
+                if (XMLHttp.readyState == 4 && XMLHttp.status == 200) {
+                        let jsonFilmes = XMLHttp.responseText;
+                        let JsonObj = JSON.parse(jsonFilmes);
+
+                        
+
+                        for (let i in JsonObj.filmes){
+                            
+                            //atribui a variavel a lista de items de um arrai de multipla dimensao 
+                            let item = JsonObj.filmes[i]
+                            
+                            // cria o elemento div row
+                            let divRow = document.createElement('div')
+                            divRow.className = 'row'
+                            // cria o elemento div col
+                            let divCol = document.createElement('div')
+                            divCol.className = 'col'
+
+                            // atribui os elementos do xml para a estrutura 
+                            let p1 = document.createElement('p')
+                            p1.innerHTML = '<strong>Título: </strong>' + item.titulo 
+                            let p2 = document.createElement('p')
+                            p2.innerHTML = '<strong>Resumo: </strong>' + item.titulo
+                            let p3 = document.createElement('p')
+                            let genero = ''
+                            for(let g in item.generos){
+                                if(genero){
+                                    genero += ', '
+                                }
+                                genero += item.generos[g].genero
+                            }
+                            
+                            p3.innerHTML = '<strong>Gênero: </strong>' + genero
+                            let p4 = document.createElement('p')
+                            let elenco = ''
+                            for(let e in item.elenco){
+                                if(elenco){
+                                    elenco += ', '
+                                }
+                                elenco += item.elenco[e].ator
+                            }
+                            
+
+                            p4.innerHTML = '<strong>Elenco: </strong>' + elenco
+                            let p5 = document.createElement('p')
+                            p5.innerHTML = '<strong>Data de lançamento: </strong>' + item.dataLancamento.data + '(' + item.dataLancamento.pais +')'
+                            let hr = document.createElement('hr')
+                            // adiciona a cadeia de items
+                            divRow.appendChild(divCol)
+                            divCol.appendChild(p1)
+                            divCol.appendChild(p2)
+                            divCol.appendChild(p3)
+                            divCol.appendChild(p4)
+                            divCol.appendChild(p5)
+                            divCol.appendChild(hr)
+                            
+                            document.getElementById('lista').appendChild(divRow)
+                        }
+
+                    
+                }
+                if (XMLHttp.readyState == 4 && XMLHttp.status == 404) {
+                    //comentado
+                }
+            }
+                XMLHttp.send();
+            }
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-light bg-light mb-4">
+            <div class="container">
+                <div class="navbar-brand mb-0 h1">
+                    <h3>Cartálogo de filmes</h3>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container" id="lista">
+            <div class="row mb-5">
+                <div class="col">
+                    <button class="btn btn-success" type="button" onclick="getFilmes()">LISTR FILMES</button>
+                </div>
+            </div>
+            
+        </div>
+
+    </body>
+</html
+
+ 

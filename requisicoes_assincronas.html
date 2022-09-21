@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+
+		<title>Requisições assincronas</title>
+
+		<!-- bootstrap - link cdn -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">	
+        <script>
+            function requisitarPagina(url){
+                // verifica se já nao há elemento criado na pagina
+                if(!document.getElementById('loading')){
+                    // incluir gif de loading na pagina 
+                    let imgLoading = document.createElement("img")
+                    imgLoading.id = 'loading'
+                    imgLoading.src = "loading.gif"
+                    imgLoading.className = 'rounded mx-auto d-block'
+                    // adiciona o elemento na pagina
+                    document.getElementById("conteudo").appendChild(imgLoading)
+                }
+                // cria a variavel do ajax que carrega o XMLHTTP 
+                let ajax = new XMLHttpRequest()
+
+                ajax.open('GET', url)
+               	// verifica se o elemnto do ready state é iguak a 4 
+                ajax.onreadystatechange = () => {
+                    if(ajax.readyState == 4 && ajax.status == 200){
+                        document.getElementById("conteudo").innerHTML = ajax.responseText    
+                    }
+                    if(ajax.readyState == 4 && ajax.status == 404){ 
+                        console.log("requisição finalizada, pagina nao encontrada")
+                        document.getElementById('loading').remove()
+                    }
+                }
+                ajax.send()  
+            }
+        </script>
+	</head>
+
+	<body>
+
+		<!-- Static navbar -->
+	    <nav class="navbar navbar-light bg-light mb-4">
+	      <div class="container">
+	        <div class="navbar-brand mb-0 h1">
+	        	<h3>Requisições síncronas e assíncronas</h3>
+	        </div>
+	      </div>
+	    </nav>
+
+
+	    <div class="container">
+
+	    	<div class="row mb-2">
+	    		<div class="col-md-4 center"></div>
+	    		<div class="col-md-4 center">
+	    			<a href="#" class="btn btn-primary" onclick="requisitarPagina('pagina_1_conteudo.php')">Página 1</a>
+	    			<a href="#" class="btn btn-primary" onclick="requisitarPagina('pagina_2_conteudo.html')">Página 2</a>
+	    			<a href="#" class="btn btn-primary" onclick="requisitarPagina('pagina_3_conteudo.html')">Página 3</a>
+	    		</div>
+	    		<div class="col-md-4 center"></div>
+	    	</div>
+	    	
+	    	<div class="row">
+		    	<div class="col-md-1">
+				</div>
+		    	<div class="col-md-10" id="conteudo">	
+				<div class="col-md-1">
+				</div>
+			</div>
+		</div>	
+	</body>
+</html>
